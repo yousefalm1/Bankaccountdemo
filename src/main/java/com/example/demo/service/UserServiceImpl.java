@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.bo.UserProfileResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import com.example.demo.bo.CreateUserRequest;
 import com.example.demo.bo.UpdateUserProfileRequest;
@@ -11,7 +13,8 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -74,4 +77,32 @@ public class UserServiceImpl implements UserService {
         UserResponse response = new UserResponse(userEntity.getId(), userEntity.getUsername());
         return response;
     }
+
+    @Override
+    public UserProfileResponse getUserProfile() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        UserEntity userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserProfileResponse(userEntity.getId(), userEntity.getUsername(), userEntity.getPhoneNumber(), userEntity.getAddress());
+
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return List.of();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return null;
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+
+    }
+
 }
