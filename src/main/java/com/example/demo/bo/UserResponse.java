@@ -6,7 +6,6 @@ public class UserResponse {
 
     private String name;
 
-    private String status;
 
     public UserResponse(Long id, String name) {
         this.id = id;
@@ -29,11 +28,5 @@ public class UserResponse {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
