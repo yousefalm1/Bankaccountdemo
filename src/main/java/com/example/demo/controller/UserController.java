@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.bo.UpdateUserProfileRequest;
+import com.example.demo.bo.UserProfileResponse;
 import com.example.demo.bo.UserResponse;
 import com.example.demo.service.UserService;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +15,13 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+
+    @GetMapping("/profile")
+    public UserProfileResponse getProfile() {
+        return userService.getUserProfile();
+
     }
 
     @PutMapping("/update-profile")

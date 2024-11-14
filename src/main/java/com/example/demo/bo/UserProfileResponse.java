@@ -1,19 +1,17 @@
 package com.example.demo.bo;
 
-public class UserResponse {
-
+public class UserProfileResponse {
     private Long id;
     private String username;
     private String phoneNumber;
     private String address;
 
-    public UserResponse(Long id, String username) {
+    public UserProfileResponse(Long id, String username, String phoneNumber, String address) {
         this.id = id;
         this.username = username;
-//        this.phoneNumber = phoneNumber;
-//        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
     }
-
 
     public Long getId() {
         return id;
@@ -47,3 +45,4 @@ public class UserResponse {
         this.address = address;
     }
 }
+
