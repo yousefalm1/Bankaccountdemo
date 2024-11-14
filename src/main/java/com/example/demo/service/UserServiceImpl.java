@@ -1,6 +1,10 @@
 package com.example.demo.service;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 import com.example.demo.bo.CreateUserRequest;
+import com.example.demo.bo.UpdateUserProfileRequest;
 import com.example.demo.bo.UserResponse;
 import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.UserEntity;
@@ -20,6 +24,38 @@ public class UserServiceImpl implements UserService {
         this.accountRepository = accountRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+
+    @Override
+    public UserResponse updateUserProfile(UpdateUserProfileRequest request) {
+        // Retrieve the current authenticated user's username
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Find the user by username
+        UserEntity userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Update fields if they are provided
+        if (request.getUsername() != null) {
+            userEntity.setUsername(request.getUsername());
+        }
+        if (request.getEmail() != null) {
+            userEntity.setUsername(request.getEmail());
+        }
+        if (request.getPhoneNumber() != null) {
+            userEntity.setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getAddress() != null) {
+            userEntity.setAddress(request.getAddress());
+        }
+        if (request.getPassword() != null) {
+            userEntity.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        }
+
+        userEntity = userRepository.save(userEntity);
+        return new UserResponse(userEntity.getId(), userEntity.getUsername());
+    }
+
 
     @Override
     public UserResponse createUser(CreateUserRequest request) {
